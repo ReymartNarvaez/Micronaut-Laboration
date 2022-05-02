@@ -14,23 +14,23 @@ import javax.validation.constraints.NotNull;
 import static io.micronaut.http.HttpStatus.CONFLICT;
 import static io.micronaut.http.HttpStatus.CREATED;
 
-@Controller("/employee")
+@Controller("/employees")
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeRepository employeeService) {
+        this.employeeService = employeeService;
     }
 
     @Get
     Publisher<Employee> list() {
-        return employeeRepository.list();
+        return employeeService.list();
     }
 
     @Post
     Mono<HttpStatus> save(@NonNull @NotNull @Valid Employee employee) {
-        return employeeRepository.save(employee)
-                .map(add -> add ? CREATED : CONFLICT);
+        return employeeService.save(employee)
+                .map(added -> added ? CREATED : CONFLICT);
     }
 }
